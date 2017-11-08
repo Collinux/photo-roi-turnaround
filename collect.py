@@ -162,9 +162,9 @@ def get_category(n):
     
 
 if __name__ == "__main__":
-    #try:
-    #    get_images()
-    #except KeyboardInterrupt:
-    #    write_status()
-    #    sys.exit(1)
+    try:
+        get_images()
+    except KeyboardInterrupt:
+        write_status()
+        sys.exit(1)
     write_status()
