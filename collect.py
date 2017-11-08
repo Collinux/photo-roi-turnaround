@@ -20,8 +20,12 @@ from datetime import datetime
 dir_path = os.path.dirname(os.path.realpath(__file__))
 token_file_location = dir_path + "/consumerkey.txt" 
 def get_key(): 
-    with open(token_file_location) as f: 
-        return f.read().rstrip() 
+    try:
+        with open(token_file_location) as f: 
+            return f.read().rstrip() 
+    except IOError:
+        print "consumerkey.txt not found. Please view the source for instructions."
+        sys.exit(1)
 
 # Request all pages from 500px.com and dump the data in photos.dat
 # See `Row` object for headers
@@ -48,6 +52,10 @@ def get_images():
     sample_size = response_content["total_items"]
     num_requests = response_content["total_pages"]
     print "Collecting %s total items... sending %s requests..." % (sample_size, num_requests)
+
+    # Write column headers
+    with open("photos.dat", "a") as f:
+        f.write("URL Category Elapsed-Days\n")
 
     # Pagination handles "x" images per request. Increment this to go further back into past
     data = []
@@ -94,39 +102,35 @@ def get_images():
             total_sample += 1
 
 
+
 # After all data is copied to photos.dat then write some info to status.txt
 def write_status():
     # Track how many of each category we have
-    people_count = sport_count = journalism_count = landscapes_count = \
-     nature_count = travel_count = total = 0
+    sport_count = journalism_count = landscapes_count = travel_count = total = 0
 
     # Read each row and count them
     for line in open("photos.dat", "r"):
         columns = line.split(" ") 
         category = columns[1]
-        if category == "Nature":
-            nature_count += 1
-        elif category == "Sport":
+        if category == "Sport":
             sport_count += 1
         elif category == "Journalism":
             journalism_count += 1
         elif category == "Landscapes":
             landscapes_count += 1
-        elif category == "Nature":
-            nature_count += 1
         elif category == "Travel":
             travel_count += 1
         total += 1
 
     with open("status.txt", "w") as f:
-        f.write("Total Rows: " + str(total))
-        f.write("\nCategory Counts: \n")
-        f.write("\tPeople: " + str(people_count))
-        f.write("\tSport: " + str(sport_count))
-        f.write("\tJournalism: " + str(journalism_count))
-        f.write("\tLandscapes: " + str(landscapes_count))
-        f.write("\tNature: " + str(nature_count))
-        f.write("\tTravel: " + str(travel_count))
+        f.write("Category Count")
+        f.write("\nSport " + str(sport_count))
+        f.write("\nJournalism " + str(journalism_count))
+        f.write("\nLandscapes " + str(landscapes_count))
+        f.write("\nTravel " + str(travel_count))
+        f.write("\nTotal " + str(total))
+        f.write("\nData Captured On " + str(datetime.now()))
+        f.write("\n")
             
 # Represents one row in the data set (photos.dat)
 class Row(object):
@@ -145,16 +149,12 @@ class Row(object):
 # This will only return values for the categories tracked in this study:
 # "People", "Sport", "Journalism", "Landscapes", "Nature", and "Travel".
 def get_category(n):
-    if n == 7:
-        return "People"
-    elif n == 17:
+    if n == 17:
         return "Sport"
     elif n == 3:
         return "Journalism"
     elif n == 8:
         return "Landscapes"
-    elif n == 18:
-        return "Nature"
     elif n == 13:
         return "Travel"
     else:
@@ -162,9 +162,9 @@ def get_category(n):
     
 
 if __name__ == "__main__":
-    try:
-        get_images()
-    except KeyboardInterrupt:
-        write_status()
-        sys.exit(1)
+    #try:
+    #    get_images()
+    #except KeyboardInterrupt:
+    #    write_status()
+    #    sys.exit(1)
     write_status()

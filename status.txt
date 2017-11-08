@@ -1,0 +1,7 @@
+Category Count
+Sport 158
+Journalism 92
+Landscapes 8562
+Travel 1090
+Total 9902
+Data Captured On 2017-11-08 15:52:20.801312
