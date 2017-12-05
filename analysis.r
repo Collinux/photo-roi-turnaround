@@ -31,13 +31,17 @@ landscapes <- landscapes[!landscapes %in% boxplot.stats(landscapes)$out]
 travel <- travel[!travel %in% boxplot.stats(travel)$out]
 
 # Confidence Intervals
-t.test(c(sport, journalism, landscapes,travel))$conf.int # Across all categories
-intervals <- c(t.test(sport)$conf.int, t.test(journalism)$conf.int, 
+t.test(c(sport, journalism, landscapes,travel), conf.level = 1-0.5/4)$conf.int # Across all categories
+intervals <- c(t.test(sport)$conf.int, t.test(journalism)$conf.int,
                t.test(landscapes)$conf.int, t.test(travel)$conf.int)
 boxplot(intervals, xlab="Days Taken To Upload", horizontal = T)
 
-# Test each hypothesis
-t.test(journalism, landscapes, alternative = "less")
-t.test(landscapes, sport, alternative = "less")
-t.test(sport, travel, alternative = "less")
+# Test each hypothesis (4 choose 2 = 6)
+wilcox.test(landscapes, sport, alternative = "less")
+wilcox.test(landscapes, journalism, alternative = "less")
+wilcox.test(landscapes, travel, alternative = "less")
 
+wilcox.test(sport, journalism, alternative = "less")
+wilcox.test(sport, travel, alternative = "less")
+
+wilcox.test(journalism, travel, alternative = "less")
