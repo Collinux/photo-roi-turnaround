@@ -37,11 +37,12 @@ intervals <- c(t.test(sport)$conf.int, t.test(journalism)$conf.int,
 boxplot(intervals, xlab="Days Taken To Upload", horizontal = T)
 
 # Test each hypothesis (4 choose 2 = 6)
-wilcox.test(landscapes, sport, alternative = "less")
-wilcox.test(landscapes, journalism, alternative = "less")
-wilcox.test(landscapes, travel, alternative = "less")
+t.test(journalism, landscapes, alternative = "two.sided")
+t.test(journalism, sport, alternative = "two.sided")
+t.test(journalism, travel, alternative = "two.sided")
 
-wilcox.test(sport, journalism, alternative = "less")
-wilcox.test(sport, travel, alternative = "less")
+t.test(landscapes, sport, alternative = "two.sided")
+t.test(landscapes, travel, alternative = "two.sided")
 
-wilcox.test(journalism, travel, alternative = "less")
+t.test(sport, travel, alternative = "two.sided")
+
