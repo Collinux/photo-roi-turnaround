@@ -1,5 +1,4 @@
 ## Statistical Analysis of Professional Photographer’s Estimated Return on Investment (ROI) Turnaround Time
-#### Collin Guarino, crguarin@uncg.edu
 #### STA-301: Statistical Methods - Fall 2017
 #### The University of North Carolina at Greensboro
 ___
